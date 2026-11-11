@@ -1,5 +1,5 @@
 -- ============================================================
--- 🧨 INTRO: EXPLOSIÓN SALEMSDUELS IS THE BEST 🧨
+-- 🧨 INTRO: EXPLOSIÓN + ECO SALEMSDUELS IS THE BEST 🧨
 -- ============================================================
 repeat task.wait() until game:IsLoaded()
 local Players = game:GetService("Players")
@@ -39,6 +39,22 @@ boomCircle.BackgroundColor3 = Color3.fromRGB(255, 120, 0)
 boomCircle.BorderSizePixel = 0
 Instance.new("UICorner", boomCircle).CornerRadius = UDim.new(1, 0)
 
+-- Efecto de Eco (creamos varias capas de texto)
+local echoTexts = {}
+for i = 1, 4 do
+	local echo = Instance.new("TextLabel", introGui)
+	echo.Size = UDim2.new(1, 0, 0, 100)
+	echo.Position = UDim2.new(0, 0, 0.5, -50)
+	echo.BackgroundTransparency = 1
+	echo.Text = "SALEMSDUELS IS THE BEST"
+	echo.TextColor3 = Color3.fromRGB(255, 255, 255)
+	echo.Font = Enum.Font.GothamBlack
+	echo.TextScaled = true
+	echo.TextTransparency = 1
+	echo.ZIndex = 5 + i
+	table.insert(echoTexts, echo)
+end
+
 local text = Instance.new("TextLabel", introGui)
 text.Size = UDim2.new(1, 0, 0, 100)
 text.Position = UDim2.new(0, 0, 0.5, -50)
@@ -57,13 +73,29 @@ TweenService:Create(boomCircle, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.E
 	BackgroundTransparency = 1
 }):Play()
 
+-- Animación del texto principal y sus ecos
 task.delay(0.2, function()
-	TweenService:Create(text, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+	TweenService:Create(text, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
+	
+	for i, echo in ipairs(echoTexts) do
+		task.delay(i * 0.15, function()
+			echo.TextTransparency = 0.3
+			TweenService:Create(echo, TweenInfo.new(1.5), {
+				TextTransparency = 1,
+				Size = UDim2.new(1, 0, 0, 100 + (i * 40)),
+				TextStrokeTransparency = 1
+			}):Play()
+		end)
+	end
 end)
 
-task.delay(2, function()
+-- Desaparece todo
+task.delay(2.5, function()
 	TweenService:Create(text, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
 	TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+	for _, echo in ipairs(echoTexts) do
+		TweenService:Create(echo, TweenInfo.new(0.3), {TextTransparency = 1}):Play()
+	end
 	task.wait(0.6)
 	introGui:Destroy()
 	if boom and boom.Parent then boom:Destroy() end
