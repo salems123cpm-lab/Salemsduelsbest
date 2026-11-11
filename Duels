@@ -1,5 +1,5 @@
 -- ============================================================
--- 🧨 INTRO: EXPLOSIÓN + ECO SALEMSDUELS IS THE BEST 🧨
+-- 🧨 INTRO: EXPLOSIÓN + ECO + VOZ SALEMSDUELS IS THE BEST 🧨
 -- ============================================================
 repeat task.wait() until game:IsLoaded()
 local Players = game:GetService("Players")
@@ -20,10 +20,19 @@ bg.BackgroundColor3 = Color3.fromRGB(0,0,0)
 bg.BackgroundTransparency = 0
 bg.BorderSizePixel = 0
 
+-- Sonido de explosión
 local boom = Instance.new("Sound", SoundService)
 boom.SoundId = "rbxassetid://1597639410"
 boom.Volume = 2
 pcall(function() boom:Play() end)
+
+-- 🔥 SONIDO DE VOZ ECO (Aquí puedes cambiar el ID si tienes una voz) 🔥
+local voice = Instance.new("Sound", SoundService)
+voice.SoundId = "rbxassetid://9118823109" -- Sonido de impacto/voz robótica de Roblox
+voice.Volume = 3
+voice.PlaybackSpeed = 0.8 -- Hace que suene más grave y profundo
+voice.RollOffMaxDistance = 0
+voice.Parent = SoundService
 
 local flash = Instance.new("Frame", introGui)
 flash.Size = UDim2.new(1,0,1,0)
@@ -39,7 +48,7 @@ boomCircle.BackgroundColor3 = Color3.fromRGB(255, 120, 0)
 boomCircle.BorderSizePixel = 0
 Instance.new("UICorner", boomCircle).CornerRadius = UDim.new(1, 0)
 
--- Efecto de Eco (creamos varias capas de texto)
+-- Capas de eco visual
 local echoTexts = {}
 for i = 1, 4 do
 	local echo = Instance.new("TextLabel", introGui)
@@ -73,8 +82,10 @@ TweenService:Create(boomCircle, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.E
 	BackgroundTransparency = 1
 }):Play()
 
--- Animación del texto principal y sus ecos
 task.delay(0.2, function()
+	-- Reproducimos el sonido de la "voz" justo cuando sale el texto
+	pcall(function() voice:Play() end)
+	
 	TweenService:Create(text, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
 	
 	for i, echo in ipairs(echoTexts) do
@@ -89,7 +100,6 @@ task.delay(0.2, function()
 	end
 end)
 
--- Desaparece todo
 task.delay(2.5, function()
 	TweenService:Create(text, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
 	TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
@@ -99,6 +109,7 @@ task.delay(2.5, function()
 	task.wait(0.6)
 	introGui:Destroy()
 	if boom and boom.Parent then boom:Destroy() end
+	if voice and voice.Parent then voice:Destroy() end
 end)
 
 -- ============================================================
