@@ -1,5 +1,5 @@
 -- ============================================================
--- 🧨 INTRO: EXPLOSIÓN + ECO + VOZ SALEMSDUELS IS THE BEST 🧨
+-- 🧨 INTRO: EXPLOSIÓN + ECO DE VOZ + TEXTO 🧨
 -- ============================================================
 repeat task.wait() until game:IsLoaded()
 local Players = game:GetService("Players")
@@ -20,17 +20,17 @@ bg.BackgroundColor3 = Color3.fromRGB(0,0,0)
 bg.BackgroundTransparency = 0
 bg.BorderSizePixel = 0
 
--- Sonido de explosión
+-- 💥 SONIDO DE EXPLOSIÓN 💥
 local boom = Instance.new("Sound", SoundService)
 boom.SoundId = "rbxassetid://1597639410"
 boom.Volume = 2
 pcall(function() boom:Play() end)
 
--- 🔥 SONIDO DE VOZ ECO (Aquí puedes cambiar el ID si tienes una voz) 🔥
+-- 🔥 SONIDO DE VOZ CON ECO 🔥
 local voice = Instance.new("Sound", SoundService)
-voice.SoundId = "rbxassetid://9118823109" -- Sonido de impacto/voz robótica de Roblox
+voice.SoundId = "rbxassetid://9118823109" -- Efecto de voz grave/eco
 voice.Volume = 3
-voice.PlaybackSpeed = 0.8 -- Hace que suene más grave y profundo
+voice.PlaybackSpeed = 0.75 -- Tono más grave
 voice.RollOffMaxDistance = 0
 voice.Parent = SoundService
 
@@ -83,11 +83,13 @@ TweenService:Create(boomCircle, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.E
 }):Play()
 
 task.delay(0.2, function()
-	-- Reproducimos el sonido de la "voz" justo cuando sale el texto
+	-- 🎙️ Reproducimos la voz con eco aquí
 	pcall(function() voice:Play() end)
 	
+	-- Animación del texto principal
 	TweenService:Create(text, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
 	
+	-- Animación de las capas de eco visual
 	for i, echo in ipairs(echoTexts) do
 		task.delay(i * 0.15, function()
 			echo.TextTransparency = 0.3
